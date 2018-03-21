@@ -21,7 +21,7 @@ export default class Cell extends React.Component {
 
 
         return (
-            <div ref="cell" className={className} >
+            <div ref="cell" onClick={this.props.onClick} className={className} onContextMenu={this.props.cMenu}>
                 {this.getValue()}
             </div>
         );
