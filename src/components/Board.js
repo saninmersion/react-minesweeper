@@ -190,7 +190,7 @@ export default class Board extends React.Component {
     revealEmpty(x, y, data) {
         let area = this.traverseBoard(x, y, data);
         area.map(value => {
-            if (!value.isRevealed && (value.isEmpty || !value.isMine)) {
+            if (!value.isFlagged && !value.isRevealed && (value.isEmpty || !value.isMine)) {
                 data[value.x][value.y].isRevealed = true;
                 if (value.isEmpty) {
                     this.revealEmpty(value.x, value.y, data);
@@ -203,11 +203,11 @@ export default class Board extends React.Component {
 
     // Handle User Events
 
-    handleCellClick(x, y) {
+    _handleCellClick(x, y) {
         let win = false;
 
         // check if revealed. return if true.
-        if (this.state.boardData[x][y].isRevealed) return null;
+        if (this.state.boardData[x][y].isRevealed || this.state.boardData[x][y].isFlagged) return null;
 
         // check if mine. game over if true
         if (this.state.boardData[x][y].isMine) {
@@ -276,7 +276,7 @@ export default class Board extends React.Component {
                 return (
                     <div key={dataitem.x * datarow.length + dataitem.y}>
                         <Cell
-                            onClick={() => this.handleCellClick(dataitem.x, dataitem.y)}
+                            onClick={() => this._handleCellClick(dataitem.x, dataitem.y)}
                             cMenu={(e) => this._handleContextMenu(e, dataitem.x, dataitem.y)}
                             value={dataitem}
                         />
